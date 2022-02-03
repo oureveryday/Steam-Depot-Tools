@@ -1,7 +1,7 @@
 # Steam Depot Tools 
 
-Steam Depot Convenient tools for https://github.com/oureveryday/DepotDumper and https://github.com/oureveryday/DepotDownloaderMod. 
-All files are written by batch file. 
+Steam Depot Convenient tools for https://github.com/oureveryday/DepotDumper and https://github.com/oureveryday/DepotDownloaderMod.    
+All files are written by batch file.   
 
  * Github: https://github.com/oureveryday/Steam-Depot-Tools 
  * Gitlab: https://gitlab.com/oureveryday/Steam-Depot-Tools 
