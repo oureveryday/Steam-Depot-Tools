@@ -9,7 +9,7 @@
 @echo off
 color F1
 set "_null=1>nul 2>nul"
-set "Ver=V1.0.0"
+set "Ver=V1.1.0"
 chcp 65001 %_null%
 title  Steam Depot Tools %Ver%
 setlocal EnableDelayedExpansion
@@ -23,29 +23,74 @@ goto Menu
 set "Info=Main Menu"
 call :MenuInfo
 echo     1. Dump Depot Keys
-echo     2. Download App With Depot Key
-echo     3. About
-echo     4. Exit
+echo     2. Dump Access Token
+echo     3. Download App With Depot Key
+echo     4. About
+echo     5. Exit
 echo.
-choice /N /C 4321 /M "Select Options [1~4]:"
-if errorlevel 4 goto :Dump
+choice /N /C 54321 /M "Select Options [1~4]:"
+if errorlevel 5 goto :DumpKeys
+if errorlevel 4 goto :DumpToken
 if errorlevel 3 goto :Download
 if errorlevel 2 goto :About
 if errorlevel 1 Exit
 
-:Dump
+:DumpToken
+set "Info=Dump Access Token"
+call :MenuInfo
+echo Access Token Save folder: %~dp0depotkeys
+set "SteamAcc="
+set "SteamPass="
+:DumpToken1
+set /p SteamAcc=Steam Account Username:
+if NOT defined SteamAcc ( echo Please Input vaild Steam Account Username. & goto :DumpToken1 )
+:DumpToken2
+set /p SteamPass=Steam Account Password:
+if NOT defined SteamPass ( echo Please Input vaild Steam Account Password. & goto :DumpToken2 )
+choice /N /C YN /M "Selective Dump (Default: No)[Y/N]:"
+IF %ERRORLEVEL% EQU 1 (
+echo Selective Dump Access Token Enabled.
+echo Dumping...
+echo -------------------------------
+rd /s /q %~dp0depotkeys %_null%
+mkdir "%~dp0depotkeys"
+pushd "%~dp0depotkeys""
+"%~dp0bin\AccessTokenDumper\AccessTokenDumper.exe" -username "%SteamAcc%" -password "%SteamPass%" -select
+echo -------------------------------
+echo Access Tokens Dumped to %~dp0depotkeys.
+start "" "explorer.exe" "%~dp0depotkeys"
+pause
+popd
+goto :menu
+)
+echo Selective Access Token Disabled.
+echo Dumping...
+echo -------------------------------
+rd /s /q %~dp0depotkeys %_null%
+mkdir "%~dp0depotkeys"
+pushd "%~dp0depotkeys""
+"%~dp0bin\AccessTokenDumper\AccessTokenDumper.exe" -username "%SteamAcc%" -password "%SteamPass%"
+echo -------------------------------
+echo Access Tokens Dumped to %~dp0depotkeys.
+popd
+goto :Menu
+
+
+
+
+:DumpKeys
 set "Info=Dump Depot Keys"
 call :MenuInfo
 echo Depot Key Save folder: %~dp0depotkeys
 set "SteamAcc="
 set "SteamPass="
-:Dump1
+:DumpKeys1
 set /p SteamAcc=Steam Account Username:
-if NOT defined SteamAcc ( echo Please Input vaild Steam Account Username. & goto :Dump1 )
-:Dump2
+if NOT defined SteamAcc ( echo Please Input vaild Steam Account Username. & goto :DumpKeys1 )
+:DumpKeys2
 set /p SteamPass=Steam Account Password:
-if NOT defined SteamPass ( echo Please Input vaild Steam Account Password. & goto :Dump2 )
-choice /N /M "Selective Dump Depot (Default: No)[Y/N]:"
+if NOT defined SteamPass ( echo Please Input vaild Steam Account Password. & goto :DumpKeys2 )
+choice /N /C YN /M "Selective Dump Depot (Default: No)[Y/N]:"
 IF %ERRORLEVEL% EQU 1 (
 echo Selective Dump Depot Enabled.
 echo Dumping...
@@ -113,8 +158,18 @@ set /p GameManifest=Input Game Manifest ID, then press Enter (If unspecified lea
 set "Num="
 for /f "delims=0123456789" %%i in ("%GameManifest%") do set Num=%%i
 if defined Num ( echo Please Input vaild Game Manifest. & goto :Download3 ) 
+:Download4
+set /p GameAppToken=Input Game App Token, then press Enter (If unspecified leave blank, Default: [Leave Blank]):
+set "Num="
+for /f "delims=0123456789" %%i in ("%GameAppToken%") do set Num=%%i
+if defined Num ( echo Please Input vaild Game App Token. & goto :Download4 ) 
+:Download5
+set /p GamePackageToken=Input Game Package Token, then press Enter (If unspecified leave blank, Default: [Leave Blank]):
+set "Num="
+for /f "delims=0123456789" %%i in ("%GamePackageToken%") do set Num=%%i
+if defined Num ( echo Please Input vaild Game PackageToken. & goto :Download5 ) 
 
-choice /N /M "Download to Script Folder? (Default: Yes)[Y/N]:"
+choice /N /C YN /M "Download to Script Folder? (Default: Yes)[Y/N]:"
 IF %ERRORLEVEL% EQU 1 ( echo Download to Script Folder. & echo Download Path: "%~dp0depots" & set DownloadPath="%~dp0depots") else (
 echo Select Download Folder:
 call :FileSelect Folder
@@ -129,7 +184,9 @@ set "KeyPathArg=-depotkeys %KeyPath% "
 set "DownloadPathArg=-dir %DownloadPath% "
 if defined GameDepot ( set "GameDepotArg=-depot %GameDepot% " ) else ( set "GameDepotArg=")
 if defined GameManifest ( set "GameManifestArg=-manifest %GameManifest% " ) else ( set "GameManifestArg=")
-"%~dp0bin\DepotDownloaderMod\DepotDownloaderMod.exe" %GameAPPIDArg%%KeyPathArg%%GameDepotArg%%GameManifestArg%%DownloadPathArg%
+if defined GameAppToken ( set "GameAppTokenArg=-apptoken %GameAppToken% " ) else ( set "GameAppTokenArg=")
+if defined GamePackageToken ( set "GamePackageTokenArg=-packagetoken %GamePackageToken% " ) else ( set "GamePackageTokenArg=")
+"%~dp0bin\DepotDownloaderMod\DepotDownloaderMod.exe" -max-servers 128 -max-downloads 256 %GameAPPIDArg%%KeyPathArg%%GameDepotArg%%GameManifestArg%%DownloadPathArg%%GameAppTokenarg%%GamePackageTokenarg%
 echo --------------------------------
 echo Download Complete.
 start "" "explorer.exe" "%DownloadPath%"

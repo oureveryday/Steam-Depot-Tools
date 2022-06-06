@@ -9,11 +9,13 @@ All files are written by batch file.
 ## Functions 
 
  * Dump Steam Depot Keys. 
+ * Dump Steam App/Package Access Tokens. 
  * Download Depot With Depot Keys. 
 
 ## Dependies 
  * https://github.com/oureveryday/DepotDumper 
  * https://github.com/oureveryday/DepotDownloaderMod 
+ * https://github.com/oureveryday/AccessTokenDumper 
 
  ## Usage 
  * Download all files and run "SteamDepotTools.cmd"
