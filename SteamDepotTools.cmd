@@ -38,7 +38,7 @@ if errorlevel 1 Exit
 :DumpToken
 set "Info=Dump Access Token"
 call :MenuInfo
-echo Access Token Save folder: %~dp0depotkeys
+echo Access Token Save folder: %~dp0depottokens
 set "SteamAcc="
 set "SteamPass="
 :DumpToken1
@@ -52,27 +52,29 @@ IF %ERRORLEVEL% EQU 1 (
 echo Selective Dump Access Token Enabled.
 echo Dumping...
 echo -------------------------------
-rd /s /q %~dp0depotkeys %_null%
-mkdir "%~dp0depotkeys"
-pushd "%~dp0depotkeys""
+rd /s /q %~dp0depottokens %_null%
+mkdir "%~dp0depottokens"
+pushd "%~dp0depottokens""
 "%~dp0bin\AccessTokenDumper\AccessTokenDumper.exe" -username "%SteamAcc%" -password "%SteamPass%" -select
 echo -------------------------------
-echo Access Tokens Dumped to %~dp0depotkeys.
-start "" "explorer.exe" "%~dp0depotkeys"
-pause
+echo Access Tokens Dumped to %~dp0depottokens.
 popd
+start "" "explorer.exe" "%~dp0depottokens"
+pause
 goto :menu
 )
 echo Selective Access Token Disabled.
 echo Dumping...
 echo -------------------------------
-rd /s /q %~dp0depotkeys %_null%
-mkdir "%~dp0depotkeys"
-pushd "%~dp0depotkeys""
+rd /s /q %~dp0depottokens %_null%
+mkdir "%~dp0depottokens"
+pushd "%~dp0depottokens""
 "%~dp0bin\AccessTokenDumper\AccessTokenDumper.exe" -username "%SteamAcc%" -password "%SteamPass%"
 echo -------------------------------
-echo Access Tokens Dumped to %~dp0depotkeys.
+echo Access Tokens Dumped to %~dp0depottokens.
 popd
+start "" "explorer.exe" "%~dp0depottokens"
+pause
 goto :Menu
 
 
@@ -81,7 +83,7 @@ goto :Menu
 :DumpKeys
 set "Info=Dump Depot Keys"
 call :MenuInfo
-echo Depot Key Save folder: %~dp0depottokens
+echo Depot Key Save folder: %~dp0depotkeys
 set "SteamAcc="
 set "SteamPass="
 :DumpKeys1
@@ -95,28 +97,30 @@ IF %ERRORLEVEL% EQU 1 (
 echo Selective Dump Depot Enabled.
 echo Dumping...
 echo -------------------------------
-rd /s /q %~dp0depottokens %_null%
-mkdir "%~dp0depottokens"
-pushd "%~dp0depottokens""
+rd /s /q %~dp0depotkeys %_null%
+mkdir "%~dp0depotkeys"
+pushd "%~dp0depotkeys""
 "%~dp0bin\DepotDumper\DepotDumper.exe" -username "%SteamAcc%" -password "%SteamPass%" -select
 echo -------------------------------
-echo Depot Key Dumped to %~dp0depottokens.
-start "" "explorer.exe" "%~dp0depottokens"
-pause
+echo Depot Key Dumped to %~dp0depotkeys.
 popd
+start "" "explorer.exe" "%~dp0depotkeys"
+pause
 goto :menu
 )
 
 echo Selective Dump Depot Disabled.
 echo Dumping...
 echo -------------------------------
-rd /s /q %~dp0depottokens %_null%
-mkdir "%~dp0depottokens"
-pushd "%~dp0depottokens""
+rd /s /q %~dp0depotkeys %_null%
+mkdir "%~dp0depotkeys"
+pushd "%~dp0depotkeys""
 "%~dp0bin\DepotDumper\DepotDumper.exe" -username "%SteamAcc%" -password "%SteamPass%"
 echo -------------------------------
-echo Depot Key Dumped to %~dp0depottokens.
+echo Depot Key Dumped to %~dp0depotkeys.
 popd
+start "" "explorer.exe" "%~dp0depotkeys"
+pause
 goto :Menu
 
 :Download
