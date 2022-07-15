@@ -1,5 +1,7 @@
 # Steam Depot Tools 
 
+IMPROTANT: Depot Download function Doesn't work anymore Due to GetManifestRequestCode Verification.
+
 Steam Depot Convenient tools for https://github.com/oureveryday/DepotDumper and https://github.com/oureveryday/DepotDownloaderMod.    
 All files are written by batch file.   
 
