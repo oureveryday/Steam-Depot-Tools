@@ -1,9 +1,10 @@
 # Steam Depot Tools 
 
-IMPROTANT: Depot Download function Doesn't work anymore Due to GetManifestRequestCode Verification.
-
 Steam Depot Convenient tools for https://github.com/oureveryday/DepotDumper and https://github.com/oureveryday/DepotDownloaderMod.    
 All files are written by batch file.   
+
+Update:
+Added storage_depotdownloadermod.py to generate a bat file to download with depot keys and manifests from https://github.com/wxy1343/ManifestAutoUpdate/
 
  * Github: https://github.com/oureveryday/Steam-Depot-Tools 
  * Gitlab: https://gitlab.com/oureveryday/Steam-Depot-Tools 
